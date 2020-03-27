@@ -155,32 +155,11 @@ def binning_self(df, col, target, cut=None, right_border=True):
 
 #不能使用自动分箱的变量
 hand_bins = {
- 'FREQUENCY_DETAIL_SCORE':[-1,0,6,20],
- 'GREY_LIST_SCORE':[-1,2,30],
- 'FREQUENCY_DETAIL_SCORE.1':[0,10,1000],
- 'ALD_INB_OTH_ORGNUM':[1,2,10],
- 'ALD_CNB_OTH_ORGNUM':[1,2,10],
- 'IR_ID_X_MAIL_CNT':[0,1,5],
- 'IR_ID_X_NAME_CNT':[1,2,6],
- 'IR_CELL_X_MAIL_CNT':[0,1,5],
- 'IR_CELL_X_NAME_CNT':[1,2,6],
- 'IR_M3_ID_X_CELL_CNT':[0,1,4],
- 'IR_M3_ID_X_HADDR_CNT':[-9999,0,3],
- 'IR_M3_CELL_X_HADDR_CNT':[-9999,0,3],
- 'IR_M6_ID_X_CELL_CNT':[0,1,4],
- 'IR_M6_CELL_X_HADDR_CNT':[-9999,0,5],
- 'IR_M6_CELL_X_BIZ_ADDR_CNT':[-9999,0,6],
- 'IR_M6_LMAN_CELL_X_ID_CNT':[-9999,0,3],
- 'IR_M6_LMAN_CELL_X_CELL_CNT':[-9999,0,3],
- 'IR_M12_ID_X_CELL_CNT':[1,5],
- 'IR_M12_ID_X_NAME_CNT':[1,5],
- 'IR_M12_CELL_X_NAME_CNT':[1,5],
- 'IR_M12_ID_X_HADDR_CNT':[0,1,7],
- 'IR_M12_ID_X_BIZ_ADDR_CNT':[0,1,10],
- 'IR_M12_CELL_X_HADDR_CNT':[0,1,7],
- 'IR_M12_CELL_X_BIZ_ADDR_CNT':[0,1,10],
- 'IR_M12_LMAN_CELL_X_ID_CNT':[0,3],
- 'IR_M12_LMAN_CELL_X_CELL_CNT':[0,3]
+ #手动填写需要手动分箱的特征与分箱点  
+ '******':[-1,0,6,20], 
+ '******':[-1,2,30],
+ '******':[0,10,1000],
+ '******':[1,2,10]
 }
 
 hand_bins = {k:[-np.inf,*v[:-1],np.inf] for k,v in hand_bins.items()}
@@ -323,28 +302,18 @@ for i in num_col_list:
     graphforbestbin(train_data,i,"target",n=2,q=10)
 
 #对于无法卡方分箱的变量，查看类别变量分箱情况
-cate_col_list2 = ['ALD_ID_X_CELL_NUM','NBANK_ORGNUM12','NBANK_ORGNUM11','NBANK_ORGNUM015','NBANK_ALLNUM12',
-                  'IR_ID_X_CELL_CNT','ALD_INB_ALLNUM','ALD_INB_OTH_ALLNUM','ALD_INB_ORGNUM','ALD_CNB_ALLNUM','ALD_CNB_OTH_ALLNUM','ALD_CNB_ORGNUM'
+#cate_col_list2 手动填写需要类别变量分箱的特征
+#auto_col_bins 为根据卡方分箱学习曲线，设置各个变量最佳的分箱个数
+#hand_col_bins 为调整后的类别变量的分箱点
+cate_col_list2 = ['******','******','******'
                   ]
 
-auto_col_bins = {'NBANK_ALLNUM11':4,'NBANK_ALLNUM015':4, 'PLATFORM_COUNT7天内申请人在多个平台申请借款':3,
-                 'PLATFORM_COUNT3个月内申请人在多个平台申请借款':5,'PLATFORM_COUNT1个月内申请人在多个平台申请借款':3,
-                'IR_ALLMATCH_DAYS':5,'SCORECONSOFF':5,'SCORECASHOFF':3,'SCORECASHON':5,'SCOREREVOLOAN':4
-                 }
+auto_col_bins = {'******':4,'******':4, '******':3
+              }
 
-hand_col_bins = {'ALD_ID_X_CELL_NUM':[1,2,15],
-                 'NBANK_ORGNUM12':[1,2,3,19],
-                'NBANK_ORGNUM11':[1,2,3,4,6,19],
-                'NBANK_ORGNUM015':[0,1,2,3,17.5],
-                'NBANK_ALLNUM12':[0,1,2,3,22],
-                  'IR_ID_X_CELL_CNT':[1,2,3,29],
-                'ALD_INB_ALLNUM':[1,2,15],
-                'ALD_INB_OTH_ALLNUM':[1,2,11],
-                'ALD_INB_ORGNUM':[1,2,15],
-                'ALD_CNB_ALLNUM':[1,2,15],
-                'ALD_CNB_OTH_ALLNUM':[1,2,11],
-                'ALD_CNB_ORGNUM':[1,2,15]
-}
+hand_col_bins = {'******':[1,2,15],
+                 '******':[1,2,3,19],
+              }
 hand_col_bins = {k:[-np.inf,*v[:-1],np.inf] for k,v in hand_col_bins.items()}
 hand_col_bins.update(hand_bins)
 
