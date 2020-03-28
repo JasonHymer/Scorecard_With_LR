@@ -349,14 +349,6 @@ bins_of_final = {k: v for k, v in bins_of_col.items() if k in col_final}
 
 
 
-#筛选最终的测试集和训练集
-model_data = train_data[col_final]
-vali_data =  test_data[col_final]
-
-model_data.to_csv(r'D:\CreditScorecard\Data\model_data.csv',encoding='gbk',index=False)
-vali_data.to_csv(r'D:\CreditScorecard\Data\vali_data.csv',encoding='gbk',index=False)
-
-
 
 #-------------------------------------------------------------------------
 #调整WOE单调性
@@ -414,12 +406,18 @@ for cc in col:
 
 
 iv_rewoe = cal_iv(df='train_data',target='target',hand_bins=bins_of_final_rewoe)
-
-
+del_col = iv_rewoe[iv.rewoe.IV<0.05].col.unique()#筛选出IV值小于0.05的特征
+bins_of_final_rewoe_1 = {k: v for k, v in bins_of_final_rewoe.items() if k != del_col}
 #保存字典文件到本地
 f = open(r'D:\CreditScorecard\Data\bins_of_final.txt','w')
-f.write(str(bins_of_final_rewoe))
+f.write(str(bins_of_final_rewoe_1))
 f.close()
 
 
-#iv_final[iv_final['col']=='SCORECASHON'].woe
+col_rewoe = list(iv_rewoe[iv_rewoe.IV > 0.05].col.unique()) + ['target']
+#筛选最终的测试集和训练集
+model_data = train_data[col_rewoe]
+vali_data =  test_data[col_rewoe]
+
+model_data.to_csv(r'D:\CreditScorecard\Data\model_data.csv',encoding='gbk',index=False)
+vali_data.to_csv(r'D:\CreditScorecard\Data\vali_data.csv',encoding='gbk',index=False)
